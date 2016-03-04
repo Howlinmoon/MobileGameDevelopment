@@ -1,0 +1,38 @@
+<html>
+    <head></head>
+    <body>
+    
+        Objects
+        
+        <script>
+        
+            // create an object
+            // var player = {};
+            // another way
+            // var player = new Object();
+        
+            // create an object along with properties all at once
+            // looks like a Python dictionary...
+            var player = {
+                name: 'Player One',
+                energy: 100,
+                lives: 2,
+                x: 19,
+                y: 100,
+                color: 'blue'
+            };
+            
+            // Display it on the console
+            console.log("The player object: " + player);
+            // show just the name
+            console.log("The player's name: " + player.name);
+            // modify the player name
+            player.name = "This is a new name";
+            console.log("The player's new name: " + player.name);
+            // create a new property
+            player.weapon = 'Long Sword';
+            console.log("The player uses weapon: " + player.weapon);
+            
+        </script>
+    </body>
+</html>

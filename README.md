@@ -1,4 +1,4 @@
 # MobileGameDevelopment
 
-Left off with lesson 5
+Left off with lesson 6 - A challenge
 
