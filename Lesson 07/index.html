@@ -1,0 +1,34 @@
+<html>
+    <head></head>
+    <body>
+    
+        Strings
+        <script>
+            // concatenating strings
+            var title = "Mr";
+            var name = "Goldfinger";
+            
+            var salutation = "Hello " + title + " " + name;
+            console.log(salutation);
+            
+            // to upper case (making a copy of the original)
+            var upperSalutation = salutation.toUpperCase();
+            console.log(upperSalutation);
+            
+            // to lower case (overwriting the original)
+            salutation = salutation.toLowerCase();
+            console.log(salutation);
+            
+            // getting part of a string
+            var a = "Hello World using JavaScript";
+            // grab from the 7th character to the 11th
+            // using slice - zero based
+            /// note, slice does NOT include the ending character index specified.
+            var substring = a.slice(6, 11);
+            console.log("substring is: " + substring);
+        
+        
+        </script>
+    
+    </body>
+</html>
