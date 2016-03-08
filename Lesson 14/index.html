@@ -2,11 +2,25 @@
     <head></head>
     <body>
     
-        Insert Title Here
+        Scope
         
         <script>
+            
+            // declaring centimeters globally
+            var centimeters = 999;
+            // conversion between meters and centimeters
+            
+            function converter(meters) {
+                // convert from meters to centimeters
+                // one meter is 100 centimeters
+                var centimeters = meters * 100;
+                return centimeters;
+            }
         
-        
+            var a = 3;
+            console.log("Length in meters: "+a+" is "+converter(a)+" centimeters");
+            // this retrieves the global centimeters - not the value used within the function
+            console.log("Attempting to access the variable 'centimeters' from within the function: "+centimeters);
         
         </script>
     
