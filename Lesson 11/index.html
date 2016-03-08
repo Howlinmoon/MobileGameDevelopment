@@ -1,0 +1,42 @@
+<html>
+    <head></head>
+    <body>
+    
+        Arrays and Objects
+        
+        <script>
+        
+            // an array with objects
+            var enemies = [
+                {x: 10, y: 50, energy: 100},
+                {x: 11, y: 55, energy: 1},
+                {x: 12, y: 50, energy: 50},
+                {x: 13, y: 55, energy: 10},
+                {x: 14, y: 50, energy: 30}
+            ];
+            
+            //modify the energy of the 3rd (2nd) object
+
+            console.log("enemy 2 stats (before) = " + enemies[2]);
+
+            enemies[2].energy = 15;
+            
+            console.log("enemy 2 stats (after) = " + enemies[2]);
+                
+        
+            // an object with an array
+            
+            var player = {
+                name: "Somebody",
+                energy: 10,
+                weapons: ['sword', 'gun', 'club']
+            };
+            
+            // add a weapon
+            player.weapons.push("axe")
+            console.log("The updated player object: " + player);
+            
+        </script>
+    
+    </body>
+</html>
