@@ -2,11 +2,47 @@
     <head></head>
     <body>
     
-        Insert Title Here
+        Methods
         
         <script>
         
-        
+            // create an object
+            var player = {
+                // properties
+                x: 100,
+                y: 200,
+                energy: 10,
+                weapons: ['sword', 'gun'],
+                // add a method called 'addWeapon'
+                addWeapon: function(newWeapon) {
+                    this.weapons.push(newWeapon);
+                },
+                
+                // a second method to add energy
+                addEnergy: function(howMuch) {
+                    this.energy += howMuch;
+                }
+            };
+            
+            console.log("Player weapons before: "+player.weapons);
+            
+            // call 'addWeapon' method to add the following weapons
+            player.addWeapon('axe');
+            player.addWeapon('pick');
+            player.addWeapon('chainsaw');
+            
+            // access the updated player weapons property
+            console.log("Player weapons after: "+player.weapons);
+            
+            // access the current player energy level
+            console.log("Player energy level before: "+player.energy);
+            
+            // bump it up by 100
+            player.addEnergy(100);
+            
+            // access it again
+            console.log("Player energy level after: "+player.energy);
+            
         
         </script>
     
