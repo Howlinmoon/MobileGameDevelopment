@@ -1,0 +1,40 @@
+<html>
+    <head></head>
+    <body>
+    
+        Function Expressions
+        
+        <script>
+            
+            // creating a function via function declaration
+            var fly = function() {
+                return("You are flying");
+            }
+            
+            
+            // define a simple object
+            var player = {
+                // properties
+                x: 10,
+                y: 20,
+                energy: 100,
+                // methods
+                superPower: function() {
+                    return("No superpower");
+                }
+            };
+        
+            // modify the X property
+            player.x = 100;
+            
+            // modify a method...
+            console.log("Old super power: " + player.superPower());
+            // upgrade the player
+            player.superPower = fly;
+            // test it out
+            console.log("New super power: " + player.superPower());
+        
+        </script>
+    
+    </body>
+</html>
