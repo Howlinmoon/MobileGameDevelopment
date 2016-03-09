@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Canvas</title>
+        <style>
+            canvas {border: 1px solid black;}
+        </style>
+    </head>
+    <body>
+    
+        <h1>Canvas</h1>
+        <canvas width = '200' height = '200' id = 'myCanvas'></canvas>
+        <script>
+        
+            // select the canvas element
+            var canvas = document.getElementById("myCanvas");
+            // grab the context of the canvas
+            var ctx = canvas.getContext("2d");
+            
+            // starting to paint it
+            ctx.fillStyle = "rgb(200, 0, 200)";
+            // top left point is the origin by default
+            ctx.fillRect(50, 40, 100, 30);
+            
+            // change the color for the 2nd rectangle
+            ctx.fillStyle = "rgb(0, 100, 200)";
+            
+            // start x, y, width, height
+            ctx.fillRect(50, 140, 100, 30);
+        
+        </script>
+    
+    </body>
+</html>
