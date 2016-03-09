@@ -1,0 +1,34 @@
+<html>
+    <head></head>
+    <body>
+    
+        Nested Functions
+        
+        <script>
+        
+            // define a function
+            
+            function showEverywhere(text) {
+                
+                // define another function within the function
+                
+                function decorate(someText) {
+                    return "####---> " + someText + " <---####";
+                };
+                
+                text = decorate(text);
+                
+                console.log(text);
+                alert(text)
+            };
+            
+            // call the function
+            showEverywhere("Well, hello world!");
+            
+            // this will not work - out of scope
+            something = decorate("this will not work");
+        
+        </script>
+    
+    </body>
+</html>
