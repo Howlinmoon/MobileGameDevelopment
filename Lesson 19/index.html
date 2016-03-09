@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Animated Canvas</title>
+        <style>
+            canvas {border: 1px solid black;}
+        </style>
+    </head>
+    <body>
+    
+        <h1>Animated Canvas</h1>
+        <canvas width = '500' height = '300' id = 'myCanvas'></canvas>
+        <script>
+        
+            var x = 10;
+            var y = 10;
+            var w = 20;
+            var h = 30
+
+            var speed = 2;
+            
+            // select the canvas element
+            var canvas = document.getElementById("myCanvas");
+            // grab the context of the canvas
+            var ctx = canvas.getContext("2d");
+
+            var update = function() {
+                if (x < 490) {
+                    x = x + speed;
+                    console.log("new x position: " + x);
+                }
+            }
+            
+            var draw = function() {
+                // clear the canvas
+                ctx.clearRect(0, 0, 500, 300);
+
+                // starting to paint it
+                ctx.fillStyle = "rgb(200, 0, 200)";
+                ctx.fillRect(x, y, w, h);
+            }
+            
+            var step = function() {
+                // animation particulars
+                update();
+                draw();
+                // call ourselves recursively
+                window.requestAnimationFrame(step);
+            };
+            
+            // kick off the animation loop
+            step();
+            
+            
+        
+        </script>
+    
+    </body>
+</html>
