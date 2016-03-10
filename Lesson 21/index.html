@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <title>Boolean Variables</title>
+        <style>
+            canvas {border: 1px solid black;}
+        </style>
+    </head>
+    <body>
+    
+        <h1>Boolean Variables</h1>
+        <canvas width = '300' height = '300' id = 'myCanvas'></canvas>
+        <script>
+        
+            // initial position
+            var x = 10;
+            var y = 10;
+            
+            // rectangle dimensions
+            var w = 20;
+            var h = 30
+
+            // speed at which it moves
+            var speed = 2;
+            
+            // select the canvas element
+            var canvas = document.getElementById("myCanvas");
+            // grab the context of the canvas
+            var ctx = canvas.getContext("2d");
+
+            
+            // color zones (globals)
+            var blueZone, greenZone;
+            
+            var update = function() {
+                
+                // assigning a variable based on an expression result
+                var crossedRightLimit = x >= 270;
+                var crossedLeftLimit = x <= 10;
+                
+                if (crossedRightLimit) {
+                    speed = -2
+                } else if (crossedLeftLimit) {
+                    speed = 2
+                }
+                x = x + speed;
+                console.log("new x position: " + x);
+                
+                // define color
+                blueZone = x > 0 && x < 100;
+                greenZone = !blueZone && x < 200;
+                
+            }
+            
+            var draw = function() {
+                // clear the canvas
+                ctx.clearRect(0, 0, 500, 300);
+
+                // starting to paint it
+                // make the color dependant on the zone it is in
+                if (blueZone) {
+                    // using the CSS code for blue
+                    ctx.fillStyle = "#3333FF";
+                } else if (greenZone) {
+                    ctx.fillStyle = "#00CC66";
+                } else {
+                    ctx.fillStyle = "rgb(200, 0, 100)";
+                }
+                
+                ctx.fillRect(x, y, w, h);
+            }
+            
+            var step = function() {
+                // animation particulars
+                update();
+                draw();
+                // call ourselves recursively
+                window.requestAnimationFrame(step);
+            };
+            
+            // kick off the animation loop
+            step();
+            
+            
+        
+        </script>
+    
+    </body>
+</html>
