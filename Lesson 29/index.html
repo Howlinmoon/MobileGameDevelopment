@@ -63,10 +63,27 @@
             };
 
 
+            // make the player move
+            var movePlayer = function() {
+                // trigger the player to start moving
+                player.isMoving = true;
+            };
+            
+            // make the player stop moving
+            var stopPlayer = function() {
+                // stop the player moving
+                player.isMoving = false;
+            }
+            
             //grab the canvas and context
             var canvas = document.getElementById("mycanvas");
             var ctx = canvas.getContext("2d");
 
+            
+            // event listener to move the player
+            canvas.addEventListener("mousedown", movePlayer);
+            canvas.addEventListener("mouseup", stopPlayer);
+            
             //update the logic
             var update = function () {
 
