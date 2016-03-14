@@ -1,0 +1,205 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no" <title>Adding the goal</title>
+    <style>
+        canvas {
+            width: 100%;
+        }
+        
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <h1>Touch Events and Viewport</h1> -->
+    <canvas id="mycanvas" width="640" height="360"></canvas>
+    <script>
+        window.addEventListener('load', function () {
+
+            //constants
+            var GAME_WIDTH = 640;
+            var GAME_HEIGHT = 360;
+
+            var gameLive = true;
+            //enemies
+            //enemies
+            var enemies = [
+                {
+                    x: 100, //x coordinate
+                    y: 100, //y coordinate
+                    speedY: 1, //speed in Y
+                    w: 40, //width
+                    h: 40 //heght
+        }
+                , {
+                    x: 260
+                    , y: 100
+                    , speedY: 2
+                    , w: 40
+                    , h: 40
+        }
+                , {
+                    x: 380
+                    , y: 100
+                    , speedY: 3
+                    , w: 40
+                    , h: 40
+        }
+                , {
+                    x: 480
+                    , y: 100
+                    , speedY: 5
+                    , w: 40
+                    , h: 40
+        }
+      ];
+
+            // create the player object
+            var player = {
+                x: 10
+                , y: 160
+                , speedX: 2
+                , w: 40
+                , h: 40
+                , isMoving: false
+            };
+
+            // the goal object
+            var goal = {
+                x: 580,
+                y: 160,
+                w: 50,
+                h: 36
+            }
+
+            // make the player move
+            var movePlayer = function () {
+                // trigger the player to start moving
+                player.isMoving = true;
+            };
+
+            // make the player stop moving
+            var stopPlayer = function () {
+                // stop the player moving
+                player.isMoving = false;
+            }
+
+            //grab the canvas and context
+            var canvas = document.getElementById("mycanvas");
+            var ctx = canvas.getContext("2d");
+
+
+            // event mouse listener to move the player
+            canvas.addEventListener("mousedown", movePlayer);
+            canvas.addEventListener("mouseup", stopPlayer);
+
+            // event touch listener to move the player
+            canvas.addEventListener("touchdown", movePlayer);
+            canvas.addEventListener("touchup", stopPlayer);
+
+            //update the logic
+            var update = function () {
+
+                // check to see if the player has won the game
+                if (checkCollision (player, goal)) {
+                        // collision occurred
+                        // stop the game
+                        gameLive = false;
+                        alert("You Have WON somehow!");
+                        // reload the page
+                        window.location = "";
+                }
+                
+                var i = 0;
+                var n = enemies.length;
+
+                // update the player's position
+                if (player.isMoving) {
+                    // update the player position
+                    player.x += player.speedX;
+                }
+
+
+                //update the position of all enemies
+                enemies.forEach(function (element, index) {
+
+                    // Check for collision with player
+                    if (checkCollision(player, element)) {
+                        // collision occurred
+                        // stop the game
+                        gameLive = false;
+                        alert("game over");
+                        // reload the page
+                        window.location = "";
+                    }
+
+                    if (element.y > GAME_HEIGHT) {
+                        element.speedY = -element.speedY;
+                    }
+
+                    if (element.y < 0) {
+                        element.speedY = -element.speedY;
+                    }
+
+
+                    element.y += element.speedY;
+
+
+                });
+            };
+
+            //show the game on the screen
+            var draw = function () {
+                //clear the canvas
+                ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+
+                // Draw Player
+                ctx.fillStyle = "#00FF00";
+                ctx.fillRect(player.x, player.y, player.w, player.h);
+
+                //draw all enemies
+                ctx.fillStyle = "#3333FF";
+
+                enemies.forEach(function (element, index) {
+                    ctx.fillRect(element.x, element.y, element.w, element.h);
+                });
+                
+                // Draw the goal - over and over?
+                ctx.fillStyle = "rgb(128, 128, 0)";
+                ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
+
+            };
+
+            // main game loop
+            //gets executed multiple times per second
+            var step = function () {
+
+                update();
+                draw();
+                if (gameLive) {
+
+                    window.requestAnimationFrame(step);
+                }
+            };
+
+            // simple collision check - broken down first by X, then by Y
+            var checkCollision = function (rect1, rect2) {
+                var closeOnWidth = Math.abs(rect1.x - rect2.x) <= Math.max(rect1.w, rect2.w);
+                var closeOnHeight = Math.abs(rect1.y - rect2.y) <= Math.max(rect1.h, rect2.h);
+                // and them together and return - true, they collided
+                return closeOnWidth && closeOnHeight;
+            };
+
+            //initial kick
+            step();
+        });
+    </script>
+</body>
+
+</html>
