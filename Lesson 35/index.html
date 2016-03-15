@@ -1,0 +1,43 @@
+<html>
+    <head></head>
+    <body>
+    
+        More on Classes
+        
+        <script>
+            // create a monster class
+            var Monster = function () {
+                // constructor
+                console.log('A new monster has been created');
+                
+                // property
+                // give it a random energy level
+                this.energy = Math.random() * 100;
+                
+                // method - this is spawned for every instance - not efficient..
+                // this.roar = function() {
+                //    console.log('RRROAAAR');
+                // }
+            
+            };
+            
+            // add the methods externally like this
+            Monster.prototype.roar = function() {
+                    console.log('RRROAAAR');
+            };
+            
+            // You can also adjust propertiers the same way
+            Monster.prototype.getStronger = function() {
+                this.energy = this.energy * 2;
+            }
+            
+            
+            var enemyLevel1 = new Monster();
+            var enemyLevel2 = new Monster();
+            var enemyLevel3 = new Monster();
+            var enemyLevel4 = new Monster();
+        
+        </script>
+    
+    </body>
+</html>

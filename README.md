@@ -1,6 +1,6 @@
 # MobileGameDevelopment
 
-Left off with lesson 33, Sprites
+Left off with lesson 36, Final Challenge
 
 
-https://stackskills.com/courses/learn-mobile-game-development-by-building-15-games/lectures/323433
+https://stackskills.com/courses/learn-mobile-game-development-by-building-15-games/lectures/323436
