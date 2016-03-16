@@ -11,6 +11,13 @@ var GameState = {
   },
   //executed after everything is loaded
   create: function() {
+      
+      // adjusting the screen scaling mode
+      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+      // center the canvas
+      this.scale.pageAlignHorizontally = true;
+      this.scale.pageAlignVertically = true;
+      
       this.background = this.game.add.sprite(0, 0, 'background');
       this.chicken = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'chicken');
       // adjust the anchor point of the chicken to the center of the image
