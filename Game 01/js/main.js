@@ -34,9 +34,25 @@ var GameState = {
       // flip the pig on the X axis by using negative scaling
       this.pig.scale.setTo(-1, 1);
       
+      // experimenting with rotating a sprite
+      this.sheep = this.game.add.sprite(100, 250, 'sheep');
+      // shrink it to 50%
+      this.sheep.scale.setTo(0.5, 0.5);
+      // rotate it around the default anchor point
+      // negative numbers rotate the sprite counter-clockwise
+      this.sheep.angle = -45;
+      // adjust the anchor point to the center
+      this.sheep.anchor.setTo(0.5);
+      this.sheep.angle = 90;
   },
   //this is executed multiple times per second
   update: function() {
+      // modify the rotation of a sprite every time this is called
+      
+      this.sheep.angle += 0.5
+      if (this.sheep.angle > 360) {
+          this.sheep.angle = 0;
+      }
   },
   
 
