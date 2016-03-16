@@ -6,7 +6,7 @@ var GameState = {
     this.load.image('chicken',    'assets/images/chicken.png');
     this.load.image('horse',      'assets/images/horse.png');
     this.load.image('pig',        'assets/images/pig.png');
-    this.load.image('sheep',      'assets/images/sheep.png');
+    this.load.image('sheep',      'assets/images/sheep3.png');
     
   },
   //executed after everything is loaded
@@ -26,6 +26,14 @@ var GameState = {
       
       this.horse = this.game.add.sprite(120, 10, 'horse');
       this.horse.scale.setTo(0.5, 0.5);
+      
+      // Experimenting with flipping sprites
+      this.pig = this.game.add.sprite(500, 300, 'pig');
+      // adjust the anchor point to the middle of the image
+      this.pig.anchor.setTo(0.5, 0.5);
+      // flip the pig on the X axis by using negative scaling
+      this.pig.scale.setTo(-1, 1);
+      
   },
   //this is executed multiple times per second
   update: function() {
