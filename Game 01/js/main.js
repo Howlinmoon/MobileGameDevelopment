@@ -103,7 +103,14 @@ var GameState = {
     // move the current animal to the final destination
     // set the next animal as the current animal
 
+    
+    // prevent queuing up multiple movements
+    if (this.isMoving) {
+        return false;
+    }
 
+    this.isMoving = true;
+      
     var newAnimal, endX;
     if ( sprite.customParams.direction > 0 ) {
         console.log('The right arrow was clicked');
@@ -121,6 +128,10 @@ var GameState = {
     //tween animations, moving on x
     var newAnimalMovement = this.game.add.tween(newAnimal);
     newAnimalMovement.to({x: this.game.world.centerX}, 1000);
+    newAnimalMovement.onComplete.add(function() {
+        // turn off the isMoving flag
+        this.isMoving = false;
+    }, this);
     newAnimalMovement.start();  
 
     var currentAnimalMovement = this.game.add.tween(this.currentAnimal);
