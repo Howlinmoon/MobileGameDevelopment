@@ -34,9 +34,8 @@ var GameState = {
       this.animals = this.game.add.group();
       
       // need to proxy the 'self' for use inside of the anonymous function
-      
       var self = this;
-      
+      var animal;
       animalData.forEach(function(element) {
           // default the animals to be offscreen by setting their X co-ord to -1000
         animal = self.animals.create(-1000, self.game.world.centerY, element.key);
@@ -50,12 +49,13 @@ var GameState = {
           animal.input.pixelPerfectClick = true;
           animal.events.onInputDown.add(self.animateAnimal, self);
           
-          // select animals individually
-          this.currentAnimal = self.animals.next();
-          // place the current animal in the middle of the screen
-          this.currentAnimal.position.set(this.game.world.centerX, this.game.world.centerY);
           
       });
+
+      // select animals individually
+      this.currentAnimal = self.animals.next();
+      // place the current animal in the middle of the screen
+      this.currentAnimal.position.set(this.game.world.centerX, this.game.world.centerY);
 
       // left arrow
       this.leftArrow = this.game.add.sprite(60, this.game.world.centerY, 'arrow');
@@ -90,21 +90,46 @@ var GameState = {
   update: function() {
 
   },
-  
+  //play animal animation
+  animateAnimal: function(sprite, event) {
+    console.log('animate..');
+  },
 
-    // the animal switch function
-    switchAnimal: function(sprite, event) {
-        console.log('An arrow was clicked');
-        
-    },
-    
-    // the animate animal function
-    animateAnimal: function(sprite, event) {
-        console.log('The animal itself was clicked');
-        
+    //switch animal
+  switchAnimal: function(sprite, event) {
+    // get the direction of the arrow to determine which was clicked
+    // get the next animal
+    // get the final destination of the current animal
+    // move the current animal to the final destination
+    // set the next animal as the current animal
+
+
+    var newAnimal, endX;
+    if ( sprite.customParams.direction > 0 ) {
+        console.log('The right arrow was clicked');
+
+      newAnimal = this.animals.next();
+      newAnimal.x = -newAnimal.width/2;
+      endX = 640 + this.currentAnimal.width/2;
+    } else {
+      console.log('The left arrow was clicked');
+      newAnimal = this.animals.previous();
+      newAnimal.x = 640 + newAnimal.width/2;
+      endX = -this.currentAnimal.width/2;
     }
 
-    
+    //tween animations, moving on x
+    var newAnimalMovement = this.game.add.tween(newAnimal);
+    newAnimalMovement.to({x: this.game.world.centerX}, 1000);
+    newAnimalMovement.start();  
+
+    var currentAnimalMovement = this.game.add.tween(this.currentAnimal);
+    currentAnimalMovement.to({x: endX}, 1000);
+    currentAnimalMovement.start();  
+
+    this.currentAnimal = newAnimal;
+  }
+
 };
 
 //initiate the Phaser framework
