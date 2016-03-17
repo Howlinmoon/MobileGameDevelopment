@@ -38,7 +38,23 @@ var GameState = {
       var self = this;
       
       animalData.forEach(function(element) {
-        self.animals.create(200, self.game.world.centerY, element.key);
+          // default the animals to be offscreen by setting their X co-ord to -1000
+        animal = self.animals.create(-1000, self.game.world.centerY, element.key);
+        animal.customParams = {text: element.text};
+          // center the sprite anchor
+          animal.anchor.setTo(0.5, 0.5);
+          
+          // allow the current animal to be used for input
+          animal.inputEnabled = true;
+          // only allow clicks within the graphic
+          animal.input.pixelPerfectClick = true;
+          animal.events.onInputDown.add(self.animateAnimal, self);
+          
+          // select animals individually
+          this.currentAnimal = self.animals.next();
+          // place the current animal in the middle of the screen
+          this.currentAnimal.position.set(this.game.world.centerX, this.game.world.centerY);
+          
       });
 
       // left arrow
