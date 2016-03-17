@@ -19,12 +19,27 @@ var GameState = {
       this.scale.pageAlignHorizontally = true;
       this.scale.pageAlignVertically = true;
       
+      // Create a background image sprite
       this.background = this.game.add.sprite(0, 0, 'background');
+            
+      // A Group for the animals
+      var animalData = [
+          {key: 'chicken', text: 'CHICKEN'},
+          {key: 'horse',   text: 'HORSE'},
+          {key: 'pig',     text: 'PIG'},
+          {key: 'sheep',   text: 'SHEEP'}
+      ];
       
-      // We start by showing just the pig
-      this.pig = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'pig');
-      // adjust the anchor point to the middle of the image
-      this.pig.anchor.setTo(0.5, 0.5);
+      // create the formal Phaser group
+      this.animals = this.game.add.group();
+      
+      // need to proxy the 'self' for use inside of the anonymous function
+      
+      var self = this;
+      
+      animalData.forEach(function(element) {
+        self.animals.create(200, self.game.world.centerY, element.key);
+      });
 
       // left arrow
       this.leftArrow = this.game.add.sprite(60, this.game.world.centerY, 'arrow');
@@ -46,6 +61,11 @@ var GameState = {
       // adjust the anchor point
       this.rightArrow.anchor.setTo(0.5, 0.5);
       this.rightArrow.customParams = {direction: 1};
+      // allow user input on the right arrow
+      this.rightArrow.inputEnabled = true;
+      this.rightArrow.input.pixelPerfectClick = true;
+      this.rightArrow.events.onInputDown.add(this.switchAnimal, this);
+      this.rightArrow.events.onInputDown.add(this.switchAnimal, this);
 
   
   },
@@ -58,9 +78,16 @@ var GameState = {
 
     // the animal switch function
     switchAnimal: function(sprite, event) {
-        console.log('the left arrow was clicked');
+        console.log('An arrow was clicked');
+        
+    },
+    
+    // the animate animal function
+    animateAnimal: function(sprite, event) {
+        console.log('The animal itself was clicked');
         
     }
+
     
 };
 
