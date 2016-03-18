@@ -3,11 +3,18 @@ var GameState = {
   //load the game assets before the game starts
   preload: function() {
     this.load.image('background', 'assets/images/background.png');
-    this.load.image('chicken',    'assets/images/chicken.png');
-    this.load.image('horse',      'assets/images/horse.png');
-    this.load.image('pig',        'assets/images/pig.png');
-    this.load.image('sheep',      'assets/images/sheep3.png');
     this.load.image('arrow',      'assets/images/arrow.png');
+      // the animals are being replaced with sprite sheets
+//    this.load.image('chicken',    'assets/images/chicken.png');
+//    this.load.image('horse',      'assets/images/horse.png');
+//    this.load.image('pig',        'assets/images/pig.png');
+//    this.load.image('sheep',      'assets/images/sheep3.png');
+      
+      // name of the sheet, width, height of each frame, number of frames
+    this.load.spritesheet('chicken', 'assets/images/chicken_spritesheet.png', 131, 200, 3);
+    this.load.spritesheet('horse'  , 'assets/images/horse_spritesheet.png', 212, 200, 3);
+    this.load.spritesheet('pig'    , 'assets/images/pig_spritesheet.png', 297, 200, 3);
+    this.load.spritesheet('sheep'  , 'assets/images/sheep_spritesheet.png', 244, 200, 3);
     
   },
   //executed after everything is loaded
@@ -38,10 +45,13 @@ var GameState = {
       var animal;
       animalData.forEach(function(element) {
           // default the animals to be offscreen by setting their X co-ord to -1000
-        animal = self.animals.create(-1000, self.game.world.centerY, element.key);
+        animal = self.animals.create(-1000, self.game.world.centerY, element.key, 0);
         animal.customParams = {text: element.text};
           // center the sprite anchor
           animal.anchor.setTo(0.5, 0.5);
+          
+          // Create an animation for this animal 'name' of animation, 'frames to use - and their order', how fast, forever
+          animal.animations.add('animate', [0, 1, 2, 1, 0, 1], 3, false);
           
           // allow the current animal to be used for input
           animal.inputEnabled = true;
@@ -93,6 +103,8 @@ var GameState = {
   //play animal animation
   animateAnimal: function(sprite, event) {
     console.log('animate..');
+      // player the animation
+      sprite.play('animate');
   },
 
     //switch animal
