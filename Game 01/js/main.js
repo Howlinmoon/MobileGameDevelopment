@@ -52,12 +52,12 @@ var GameState = {
       animalData.forEach(function(element) {
         // default the animals to be offscreen by setting their X co-ord to -1000
         animal = self.animals.create(-1000, self.game.world.centerY, element.key, 0);
-        animal.customParams = {text: element.text};
+
         // center the sprite anchor
         animal.anchor.setTo(0.5, 0.5);
 
         // custom parameters - non-phaser related
-        animal.customParams = {text: element.key, sound: self.game.add.audio(element.audio)}
+        animal.customParams = {text: element.text, sound: self.game.add.audio(element.audio)};
           
         // Create an animation for this animal 'name' of animation, 'frames to use - and their order', how fast, forever
         animal.animations.add('animate', [0, 1, 2, 1, 0, 1], 3, false);
@@ -75,6 +75,9 @@ var GameState = {
       this.currentAnimal = self.animals.next();
       // place the current animal in the middle of the screen
       this.currentAnimal.position.set(this.game.world.centerX, this.game.world.centerY);
+      
+      // Show animal text
+      this.showText(this.currentAnimal);
 
       // left arrow
       this.leftArrow = this.game.add.sprite(60, this.game.world.centerY, 'arrow');
@@ -132,6 +135,8 @@ var GameState = {
     }
 
     this.isMoving = true;
+      // disable the text display
+      this.animalText.visible = false;
       
     var newAnimal, endX;
     if ( sprite.customParams.direction > 0 ) {
@@ -153,6 +158,7 @@ var GameState = {
     newAnimalMovement.onComplete.add(function() {
         // turn off the isMoving flag
         this.isMoving = false;
+        this.showText(newAnimal);
     }, this);
     newAnimalMovement.start();  
 
@@ -161,7 +167,23 @@ var GameState = {
     currentAnimalMovement.start();  
 
     this.currentAnimal = newAnimal;
-  }
+  },
+    
+    showText: function(animal) {
+        // no text defined?
+        if (! this.animalText) {
+            var style = {
+                font: 'bold 30pt Arial',
+                fill: '#D0171B',
+                align: 'center'
+            };
+            this.animalText = this.game.add.text(this.game.width/2, this.game.height * 0.85, '', style);
+            this.animalText.anchor.setTo(0.5, 0.5);
+        }
+        
+        this.animalText.setText(animal.customParams.text);
+        this.animalText.visible = true;
+    }
 
 };
 

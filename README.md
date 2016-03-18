@@ -1,6 +1,7 @@
 # MobileGameDevelopment
 
-left off with: Adding Text
+left off with: Starting the Virtual Pet Game
+
 
 
 
