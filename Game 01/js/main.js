@@ -15,6 +15,12 @@ var GameState = {
     this.load.spritesheet('horse'  , 'assets/images/horse_spritesheet.png', 212, 200, 3);
     this.load.spritesheet('pig'    , 'assets/images/pig_spritesheet.png', 297, 200, 3);
     this.load.spritesheet('sheep'  , 'assets/images/sheep_spritesheet.png', 244, 200, 3);
+      
+    // load the audio files
+    this.load.audio('chickenSound', ['assets/audio/chicken.ogg', 'assets/audio/chicken.mp3'])
+    this.load.audio('horseSound',   ['assets/audio/horse.ogg'  , 'assets/audio/horse.mp3'])
+    this.load.audio('pigSound',     ['assets/audio/pig.ogg'    , 'assets/audio/pig.mp3'])
+    this.load.audio('sheepSound',   ['assets/audio/sheep.ogg'  , 'assets/audio/sheep.mp3'])
     
   },
   //executed after everything is loaded
@@ -31,10 +37,10 @@ var GameState = {
             
       // A Group for the animals
       var animalData = [
-          {key: 'chicken', text: 'CHICKEN'},
-          {key: 'horse',   text: 'HORSE'},
-          {key: 'pig',     text: 'PIG'},
-          {key: 'sheep',   text: 'SHEEP'}
+          {key: 'chicken', text: 'CHICKEN', audio: 'chickenSound'},
+          {key: 'horse',   text: 'HORSE', audio: 'horseSound'},
+          {key: 'pig',     text: 'PIG', audio: 'pigSound'},
+          {key: 'sheep',   text: 'SHEEP', audio: 'sheepSound'}
       ];
       
       // create the formal Phaser group
@@ -44,20 +50,23 @@ var GameState = {
       var self = this;
       var animal;
       animalData.forEach(function(element) {
-          // default the animals to be offscreen by setting their X co-ord to -1000
+        // default the animals to be offscreen by setting their X co-ord to -1000
         animal = self.animals.create(-1000, self.game.world.centerY, element.key, 0);
         animal.customParams = {text: element.text};
-          // center the sprite anchor
-          animal.anchor.setTo(0.5, 0.5);
+        // center the sprite anchor
+        animal.anchor.setTo(0.5, 0.5);
+
+        // custom parameters - non-phaser related
+        animal.customParams = {text: element.key, sound: self.game.add.audio(element.audio)}
           
-          // Create an animation for this animal 'name' of animation, 'frames to use - and their order', how fast, forever
-          animal.animations.add('animate', [0, 1, 2, 1, 0, 1], 3, false);
-          
-          // allow the current animal to be used for input
-          animal.inputEnabled = true;
-          // only allow clicks within the graphic
-          animal.input.pixelPerfectClick = true;
-          animal.events.onInputDown.add(self.animateAnimal, self);
+        // Create an animation for this animal 'name' of animation, 'frames to use - and their order', how fast, forever
+        animal.animations.add('animate', [0, 1, 2, 1, 0, 1], 3, false);
+
+        // allow the current animal to be used for input
+        animal.inputEnabled = true;
+        // only allow clicks within the graphic
+        animal.input.pixelPerfectClick = true;
+        animal.events.onInputDown.add(self.animateAnimal, self);
           
           
       });
@@ -103,8 +112,9 @@ var GameState = {
   //play animal animation
   animateAnimal: function(sprite, event) {
     console.log('animate..');
-      // player the animation
+      // play the animation and now, sound
       sprite.play('animate');
+      sprite.customParams.sound.play();
   },
 
     //switch animal
