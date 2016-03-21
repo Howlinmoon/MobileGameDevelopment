@@ -62,17 +62,56 @@ var GameState = {
       this.buttons = [this.apple, this.candy, this.toy, this.rotate];
       // keep track of what is currently selected
       this.selectedItem = null;
+      
+      // flag to check and see if the UI is blocked or not
+      this.uiBlocked = false;
 
   },
     
     // our pick item routine
     pickItem: function(sprite, event) {
-        console.log('pick item was called');
+        if (! this.uiBlocked) {
+            console.log('pick item was called');
+            // clear the previous selected item
+            this.clearSelection();
+            
+            // make the sprite semi-transparent
+            sprite.alpha = 0.4;
+            
+            // assign the item that was passed to us
+            this.selectedItem = sprite;
+            
+        }
     },
     
     // our rotate pet routine
     rotatePet: function(sprite, event) {
-        console.log('rotatePet was called');
+        if (! this.uiBlocked) {
+            console.log('rotatePet was called');
+            
+            // block the UI while the rotation is running
+            this.uiBlocked = true;
+            
+            // ensure nothing is selected
+            this.clearSelection();
+            
+            // indicate the button is in use
+            sprite.alpha = 0.4;
+        }
+    },
+    
+    // clear the previous selection
+    clearSelection: function() {
+        console.log('clearSelection was called');
+        // use the shotgun approach to clear the previous selection
+        this.buttons.forEach(function(element, index) {
+           // set the element's alpha back to normal
+            element.alpha = 1;
+        });
+        
+        // ensure nothing is selected
+        this.selectedItem = null;
+
     }
 
   
