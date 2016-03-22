@@ -97,6 +97,30 @@ var GameState = {
             
             // indicate the button is in use
             sprite.alpha = 0.4;
+            
+            // rotate the pet
+            var petRotation = this.game.add.tween(this.pet);
+            petRotation.to({angle: '-720'}, 1000);
+            // add an on complete listener
+            petRotation.onComplete.add(function() {
+                // unblock the UI
+               this.uiBlocked = false;
+                // restore the button alpha
+                sprite.alpha = 1;
+                // the pet enjoys this - so increase the fun value by 10
+                this.pet.customParams.fun += 10;
+                console.log("the current fun value for the pet: " + this.pet.customParams.fun);
+                
+                // note we are passing the external 'this' context in the following line so we can refer to
+                // it from within here 
+            }, this);
+
+            
+            // try it out
+            petRotation.start();
+            
+            
+            
         }
     },
     
