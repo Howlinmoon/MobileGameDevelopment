@@ -21,6 +21,9 @@ var GameState = {
   //executed after everything is loaded
   create: function() {      
   	this.background = this.game.add.sprite(0, 0, 'backyard');
+      // flesh out the background sprite
+      this.background.inputEnabled = true;
+      this.background.events.onInputDown.add(this.placeItem, this);
 
   	this.pet = this.game.add.sprite(100, 400, 'pet');
   	this.pet.anchor.setTo(0.5);
@@ -136,6 +139,48 @@ var GameState = {
         // ensure nothing is selected
         this.selectedItem = null;
 
+    },
+    // placing an item
+    placeItem: function(sprite, event) {
+        // probably overkill, but this check doesn't hurt
+        if (this.selectedItem && !this.uiBlocked) {
+            // determine where the background was touched
+            var x = event.position.x;
+            var y = event.position.y;
+            var newItem = this.game.add.sprite(x, y, this.selectedItem.key);
+            // ensure the item is centered in the spot we click
+            newItem.anchor.setTo(0.5);
+            // assign custom parameters
+            newItem.customParams = this.selectedItem.customParams;
+
+            console.log('placeItem was called X: ' + x + ' Y: ' + y);
+            
+            // Move the pet to the item using another tween
+            // do not allow another selection until the first one is consumed
+            this.uiBlocked = true;
+            var petMovement = this.game.add.tween(this.pet);
+            petMovement.to({x: x, y: y}, 700);
+            petMovement.onComplete.add(function(){
+                // unblock the UI on completion of the movement
+                this.uiBlocked = false;
+                
+                // remove the targeted item
+                newItem.destroy();
+                
+                // update the pets health and fun
+                var stat;
+                for (stat in newItem.customParams) {
+                    if (newItem.customParams.hasOwnProperty(stat)) {
+                        console.log('stat is '+stat);
+                        this.pet.customParams[stat] += newItem.customParams[stat];
+                    }
+                }
+                
+            }, this);
+            
+            petMovement.start();
+            
+        }
     }
 
   
