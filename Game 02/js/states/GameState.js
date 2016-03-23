@@ -1,13 +1,6 @@
 //this game will have only 1 state
 var GameState = {
 
-  //initiate some game-level settings
-  init: function() {
-  	//scaling options
-  	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-  	this.scale.pageAlignHorizontally = true;
-  	this.scale.pageAlignVertically = true;
-  },
   //load the game assets before the game starts
   preload: function() {
     this.load.image('backyard', 'assets/images/backyard.png');    

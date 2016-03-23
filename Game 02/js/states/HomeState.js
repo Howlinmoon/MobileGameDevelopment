@@ -1,1 +1,3 @@
-var HomeState = {};
+var HomeState = {
+    
+};
