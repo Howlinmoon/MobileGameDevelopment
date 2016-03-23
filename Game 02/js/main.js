@@ -25,8 +25,13 @@ var GameState = {
       this.background.inputEnabled = true;
       this.background.events.onInputDown.add(this.placeItem, this);
 
+      // defaults to the first sprite in the sheet
   	this.pet = this.game.add.sprite(100, 400, 'pet');
   	this.pet.anchor.setTo(0.5);
+      
+      // create an animation for the pet when it is eating
+      // which frames, how many fps and loop
+      this.pet.animations.add('funnyfaces', [1, 2, 3, 2, 1], 7, false);
 
   	//custom properties (Keep track of it's fun and health levels)
   	this.pet.customParams = {health: 100, fun: 100};
@@ -167,6 +172,10 @@ var GameState = {
                 // remove the targeted item
                 newItem.destroy();
                 
+                // play the happy pet animation
+                this.pet.animations.play('funnyfaces');
+                
+                
                 // update the pets health and fun
                 var stat;
                 for (stat in newItem.customParams) {
@@ -178,6 +187,7 @@ var GameState = {
                 
             }, this);
             
+            // move the pet
             petMovement.start();
             
         }
