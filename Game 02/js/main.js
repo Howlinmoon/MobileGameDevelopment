@@ -85,6 +85,10 @@ var GameState = {
       
       // update the stats
       this.refreshStats();
+      
+      // decreaese the health stats every 5 seconds
+      this.statsDecreaser = this.game.time.events.loop(Phaser.Timer.SECOND * 5, this.reduceProperties, this);
+      
 
   },
     
@@ -209,9 +213,35 @@ var GameState = {
         }
     },
     
+    // update the stat labels
     refreshStats: function() {
         this.healthText.text = this.pet.customParams.health;
         this.funText.text = this.pet.customParams.fun;
+    },
+    
+    // the periodic erosion of stats
+    reduceProperties: function() {
+        this.pet.customParams.health -= 10;
+        this.pet.customParams.fun -= 15;
+        this.refreshStats();
+    },
+    
+    // adding another built in Phaser Function
+    // automatically called multiple times per second
+    update: function() {
+        // check for death of the pet
+        if (this.pet.customParams.health <= 0 || this.pet.customParams.fun <= 0) {
+            this.pet.frame = 4;
+            // block the UI
+            this.uiBlocked = true;
+            // wait a few seconds so the player cans see what happened
+            this.game.time.events.add(3000, this.gameOver, this);
+        }
+    },
+    
+    gameOver: function() {
+        console.log("Game Was Over, Restarting");
+        this.game.state.restart();
     }
 
   
