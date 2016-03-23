@@ -224,7 +224,7 @@ var GameState = {
     
     gameOver: function() {
         console.log("Game Was Over, Restarting");
-        this.game.state.restart();
+        this.state.start("HomeState", true, false, "GAME OVER!");
     }
 
   
