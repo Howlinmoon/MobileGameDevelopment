@@ -73,6 +73,18 @@ var GameState = {
       
       // flag to check and see if the UI is blocked or not
       this.uiBlocked = false;
+      
+      // create our labels
+      var style = { font: '20px Arial', fill: '#fff'};
+      this.game.add.text(10, 20, 'Health', style);
+      this.game.add.text(140, 20, 'Fun', style);
+      
+      // place holders for the stats
+      this.healthText = this.game.add.text(80, 20, '', style);
+      this.funText = this.game.add.text(185, 20, '', style);
+      
+      // update the stats
+      this.refreshStats();
 
   },
     
@@ -118,6 +130,8 @@ var GameState = {
                 // the pet enjoys this - so increase the fun value by 10
                 this.pet.customParams.fun += 10;
                 console.log("the current fun value for the pet: " + this.pet.customParams.fun);
+                // update the stats
+                this.refreshStats();
                 
                 // note we are passing the external 'this' context in the following line so we can refer to
                 // it from within here 
@@ -185,12 +199,19 @@ var GameState = {
                     }
                 }
                 
+                this.refreshStats();
+                
             }, this);
             
             // move the pet
             petMovement.start();
             
         }
+    },
+    
+    refreshStats: function() {
+        this.healthText.text = this.pet.customParams.health;
+        this.funText.text = this.pet.customParams.fun;
     }
 
   
