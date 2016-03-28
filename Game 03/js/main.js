@@ -7,6 +7,11 @@ var GameState = {
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
+      
+      // Start up the physics engine - arcade version
+      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+      // set gravity for all elements
+      this.game.physics.arcade.gravity.y = 1000;
   },
 
   //load the game assets before the game starts
@@ -25,14 +30,27 @@ var GameState = {
   create: function() {    
 
     this.ground = this.add.sprite(0, 500, 'ground');
+      // make the sprite aware of the physics engine
+      this.game.physics.arcade.enable(this.ground);
+      // don't make it react to gravity
+      this.ground.body.allowGravity = false;
+      // don't make it respond to an object hitting it
+      this.ground.body.immovable = true;
+      
 
     var platform = this.add.sprite(0, 300, 'platform');
+    this.game.physics.arcade.enable(platform);
+      // don't make the platform react to gravity
+      platform.body.allowGravity = false;
+      platform.body.immovable = true;
 
     //create player
     this.player = this.add.sprite(100, 200, 'player', 3);
     this.player.anchor.setTo(0.5);
     this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
     this.player.play('walking');
+    this.game.physics.arcade.enable(this.player);
+
 
   },
   update: function() {
