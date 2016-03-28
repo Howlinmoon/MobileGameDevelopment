@@ -38,11 +38,11 @@ var GameState = {
       this.ground.body.immovable = true;
       
 
-    var platform = this.add.sprite(0, 300, 'platform');
-    this.game.physics.arcade.enable(platform);
+    this.platform = this.add.sprite(0, 300, 'platform');
+    this.game.physics.arcade.enable(this.platform);
       // don't make the platform react to gravity
-      platform.body.allowGravity = false;
-      platform.body.immovable = true;
+      this.platform.body.allowGravity = false;
+      this.platform.body.immovable = true;
 
     //create player
     this.player = this.add.sprite(100, 200, 'player', 3);
@@ -54,8 +54,18 @@ var GameState = {
 
   },
   update: function() {
+    // check for collisions here
+    // collisions result in the objects stopping - if the collided (target) is immovable
+    this.game.physics.arcade.collide(this.player, this.ground,   this.landed);
+    this.game.physics.arcade.collide(this.player, this.platform, this.landed);
+    // note, 'overlap' is similar - the function is called while they are overlapping, BUT
+    // the objects are not stopped.
+      
+  },
     
-  }
+    landed: function(player, ground) {
+        //console.log("player has hit the ground");
+    }
   
 };
 
