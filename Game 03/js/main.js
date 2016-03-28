@@ -57,7 +57,11 @@ var GameState = {
     this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
     this.player.play('walking');
     this.game.physics.arcade.enable(this.player);
-
+    // add some custom parameters
+    this.player.customParams = {};
+      
+    // start to create the onscreen controls
+    this.createOnscreenControls();
 
   },
   update: function() {
@@ -88,6 +92,16 @@ var GameState = {
     
     landed: function(player, ground) {
         //console.log("player has hit the ground");
+    },
+    
+    createOnscreenControls: function () {
+        // creating buttons instead of sprites
+        this.leftArrow = this.add.button(20    , 535, 'arrowButton');
+        this.leftArrow.alpha = 0.5;
+        this.rightArrow = this.add.button(110  , 535, 'arrowButton');
+        this.rightArrow.alpha = 0.5;
+        this.actionButton = this.add.button(280, 535, 'actionButton');
+        this.actionButton.alpha = 0.5;
     }
   
 };
