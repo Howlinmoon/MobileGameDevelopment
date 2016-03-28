@@ -12,6 +12,13 @@ var GameState = {
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
       // set gravity for all elements
       this.game.physics.arcade.gravity.y = 1000;
+      
+      // enable the cursor keys for usage during the game
+      this.cursors = this.game.input.keyboard.createCursorKeys();
+      
+      // set some speed defaults
+      this.RUNNING_SPEED = 180;
+      this.JUMPING_SPEED = 550;
   },
 
   //load the game assets before the game starts
@@ -60,6 +67,22 @@ var GameState = {
     this.game.physics.arcade.collide(this.player, this.platform, this.landed);
     // note, 'overlap' is similar - the function is called while they are overlapping, BUT
     // the objects are not stopped.
+      
+    // set the speed of the player to zero by default
+    this.player.body.velocity.x = 0;
+      
+    // check for key presses
+    if (this.cursors.left.isDown) {
+        // adjust the player velocity by the constant
+        this.player.body.velocity.x = -this.RUNNING_SPEED;
+    } else if (this.cursors.right.isDown) {
+        this.player.body.velocity.x = this.RUNNING_SPEED;
+    }
+      
+    // check for jumping (up) - but ONLY if the player is DOWN touching something (floor/platform)
+    if (this.cursors.up.isDown && this.player.body.touching.down) {
+        this.player.body.velocity.y = -this.JUMPING_SPEED;
+    }
       
   },
     
