@@ -68,7 +68,7 @@ var GameState = {
     this.player = this.add.sprite(this.levelData.playerStart.x, this.levelData.playerStart.y, 'player', 3);
     this.player.anchor.setTo(0.5);
     this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
-    this.player.play('walking');
+    //this.player.play('walking');
     this.game.physics.arcade.enable(this.player);
     // add some custom parameters
     this.player.customParams = {};
@@ -99,8 +99,21 @@ var GameState = {
     if (this.cursors.left.isDown || this.player.customParams.isMovingLeft == true) {
         // adjust the player velocity by the constant
         this.player.body.velocity.x = -this.RUNNING_SPEED;
+        // show the player animation while it is moving, and in the correct (default) direction
+        this.player.scale.setTo(1, 1);
+        this.player.play('walking');
+        
     } else if (this.cursors.right.isDown || this.player.customParams.isMovingRight == true) {
         this.player.body.velocity.x = this.RUNNING_SPEED;
+        // show the flipped animation for walking to the right
+        this.player.scale.setTo(-1, 1);
+        this.player.play('walking');
+        
+    } else {
+        // not pressing left or right
+        this.player.animations.stop();
+        // reset to correct frame
+        this.player.frame = 3;
     }
       
     // check for jumping (up) - but ONLY if the player is DOWN touching something (floor/platform)
