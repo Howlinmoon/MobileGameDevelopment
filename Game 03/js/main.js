@@ -16,6 +16,9 @@ var GameState = {
       // enable the cursor keys for usage during the game
       this.cursors = this.game.input.keyboard.createCursorKeys();
       
+      // define the size of the world
+      this.game.world.setBounds(0, 0, 360, 700);
+      
       // set some speed defaults
       this.RUNNING_SPEED = 180;
       this.JUMPING_SPEED = 550;
@@ -36,7 +39,7 @@ var GameState = {
   //executed after everything is loaded
   create: function() {    
 
-    this.ground = this.add.sprite(0, 500, 'ground');
+    this.ground = this.add.sprite(0, 638, 'ground');
       // make the sprite aware of the physics engine
       this.game.physics.arcade.enable(this.ground);
       // don't make it react to gravity
@@ -63,16 +66,20 @@ var GameState = {
     this.platforms.setAll('body.allowGravity', false);
 
     //create player
-    this.player = this.add.sprite(100, 200, 'player', 3);
+    this.player = this.add.sprite(10, 545, 'player', 3);
     this.player.anchor.setTo(0.5);
     this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
     this.player.play('walking');
     this.game.physics.arcade.enable(this.player);
     // add some custom parameters
     this.player.customParams = {};
+    // initialize these params
     this.player.customParams.mustJump = false;
     this.player.customParams.isMovingLeft = false;
     this.player.customParams.isMovingRight = false;
+    // have the camera follow the player avatar
+    this.game.camera.follow(this.player);
+      
       
     // start to create the onscreen controls
     this.createOnscreenControls();
@@ -118,6 +125,11 @@ var GameState = {
         this.rightArrow.alpha = 0.5;
         this.actionButton = this.add.button(280, 535, 'actionButton');
         this.actionButton.alpha = 0.5;
+        
+        // keep the onscreen buttons from moving with the camera
+        this.leftArrow.fixedToCamera = true;
+        this.rightArrow.fixedToCamera = true;
+        this.actionButton.fixedToCamera = true;
         
         // give the buttons some listeners
         // action button
