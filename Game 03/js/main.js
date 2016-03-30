@@ -34,7 +34,10 @@ var GameState = {
     this.load.image('barrel', 'assets/images/barrel.png');    
 
     this.load.spritesheet('player', 'assets/images/player_spritesheet.png', 28, 30, 5, 1, 1);    
-    this.load.spritesheet('fire', 'assets/images/fire_spritesheet.png', 20, 21, 2, 1, 1);      
+    this.load.spritesheet('fire', 'assets/images/fire_spritesheet.png', 20, 21, 2, 1, 1);
+      
+    // load the json data file
+    this.load.text('level', 'assets/data/level.json');
   },
   //executed after everything is loaded
   create: function() {    
@@ -49,24 +52,20 @@ var GameState = {
       
 
       
-    // creating a platform group
-    var platformData = [
-        {"x": 0,  "y": 430},
-        {"x": 45, "y": 560},
-        {"x": 90, "y": 290},
-        {"x": 0,  "y": 140}
-    ];
+    // creating a platform group, loading from external data
+    this.levelData = JSON.parse(this.game.cache.getText('level'));
+      
       
     this.platforms = this.add.group();
     this.platforms.enableBody = true;
-    platformData.forEach(function(element){
+    this.levelData.platformData.forEach(function(element){
         this.platforms.create(element.x, element.y, 'platform');
     }, this);
     this.platforms.setAll('body.immovable', true);
     this.platforms.setAll('body.allowGravity', false);
 
-    //create player
-    this.player = this.add.sprite(10, 545, 'player', 3);
+    //create player - starting player position is loaded from the current level data
+    this.player = this.add.sprite(this.levelData.playerStart.x, this.levelData.playerStart.y, 'player', 3);
     this.player.anchor.setTo(0.5);
     this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
     this.player.play('walking');
