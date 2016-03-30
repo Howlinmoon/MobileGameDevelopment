@@ -82,6 +82,18 @@ var GameState = {
       
     // start to create the onscreen controls
     this.createOnscreenControls();
+      
+    // create the fire obstacles
+    this.fires = this.add.group();
+    this.fires.enableBody = true;
+    var fire;
+    this.levelData.fireData.forEach(function(element) {
+        fire = this.fires.create(element.x, element.y, 'fire');
+        fire.animations.add('fire', [0,1], 4, true);
+        fire.play('fire');
+    }, this);
+    // disable gravity
+    this.fires.setAll('body.allowGravity', false);
 
   },
   update: function() {
@@ -91,6 +103,9 @@ var GameState = {
     this.game.physics.arcade.collide(this.player, this.platforms, this.landed);
     // note, 'overlap' is similar - the function is called while they are overlapping, BUT
     // the objects are not stopped.
+      
+    // we use 'overlap' when detecting collisions between fire and the player
+    this.game.physics.arcade.overlap(this.player, this.fires, this.killPlayer);
       
     // set the speed of the player to zero by default
     this.player.body.velocity.x = 0;
@@ -189,6 +204,11 @@ var GameState = {
             this.player.customParams.isMovingRight = false;
         }, this);
 
+    },
+    
+    killPlayer: function(player, fire) {
+        console.log("YOU LOST!!!");
+        game.state.start('GameState');
     }
   
 };

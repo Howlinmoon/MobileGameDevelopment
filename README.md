@@ -1,8 +1,8 @@
 # MobileGameDevelopment
 
-left off with: Fire
+left off with: Goal Gorilla
 
-https://stackskills.com/courses/learn-mobile-game-development-by-building-15-games/lectures/323654
+https://stackskills.com/courses/learn-mobile-game-development-by-building-15-games/lectures/323655
 
 
 
