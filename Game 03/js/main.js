@@ -99,6 +99,14 @@ var GameState = {
     this.goal = this.add.sprite(this.levelData.goal.x, this.levelData.goal.y, 'goal');
     this.game.physics.arcade.enable(this.goal);
     this.goal.body.allowGravity = false;
+      
+    // Create the barrels group
+    this.barrels = this.add.group();
+    this.barrels.enableBody = true;
+    
+    // the periodic barrel spawner
+    this.barrelCreator = this.game.time.events.loop(Phaser.Timer.SECOND * this.levelData.barrelFrequency, this.createBarrel, this);
+    
 
   },
   update: function() {
@@ -222,6 +230,20 @@ var GameState = {
     winGame: function(player, goal) {
         alert("YOU WIN!!!!");
         game.state.start('GameState');
+    },
+    
+    // spawn the barrels
+    createBarrel: function() {
+        // get the first dead sprite (if any)
+        var barrel = this.barrels.getFirstExists(false);
+        if (! barrel) {
+            // no dead sprites - so create one
+            barrel = this.barrels.create(0, 0, 'barrel');
+        }
+        
+        // new or revived dead barrel - we don't care - place it
+        barrel.reset(this.levelData.goal.x, this.levelData.goal.y);
+        // not sure what 'reset' does - was not explained
     }
   
 };
