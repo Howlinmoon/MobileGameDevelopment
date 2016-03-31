@@ -79,6 +79,9 @@ var GameState = {
     // have the camera follow the player avatar
     this.game.camera.follow(this.player);
       
+    // keep the player on the screen - no running away and hiding!
+    this.player.body.collideWorldBounds = true;
+      
       
     // start to create the onscreen controls
     this.createOnscreenControls();
@@ -106,14 +109,24 @@ var GameState = {
     
     // the periodic barrel spawner
     this.barrelCreator = this.game.time.events.loop(Phaser.Timer.SECOND * this.levelData.barrelFrequency, this.createBarrel, this);
+      
+    // spawn the initial barrel immediately
+    this.createBarrel();
     
 
   },
   update: function() {
     // check for collisions here
+
     // collisions result in the objects stopping - if the collided (target) is immovable
-    this.game.physics.arcade.collide(this.player, this.ground,   this.landed);
-    this.game.physics.arcade.collide(this.player, this.platforms, this.landed);
+    this.game.physics.arcade.collide(this.player, this.ground);
+    this.game.physics.arcade.collide(this.player, this.platforms);
+      
+    // barrel collisions
+    this.game.physics.arcade.collide(this.barrels, this.ground);
+    this.game.physics.arcade.collide(this.barrels, this.platforms);
+
+      
     // note, 'overlap' is similar - the function is called while they are overlapping, BUT
     // the objects are not stopped.
       
@@ -122,7 +135,10 @@ var GameState = {
 
       // and we use overlap to detect collision between the player and the end goal
     this.game.physics.arcade.overlap(this.player, this.goal, this.winGame);
-      
+
+    // detect overlap between the barrels and the player
+    this.game.physics.arcade.overlap(this.player, this.barrels, this.killPlayer);
+
     // set the speed of the player to zero by default
     this.player.body.velocity.x = 0;
       
@@ -154,11 +170,16 @@ var GameState = {
         this.player.customParams.mustJump = false;
     }
       
+    // check to see if we need to destroy any old barrels at the bottom
+    this.barrels.forEach(function(element) {
+        if (element.x < 10 && element.y > 600) {
+            // barrel is exhausted - remove it.
+            element.kill();
+        }
+    }, this);
+      
   },
     
-    landed: function(player, ground) {
-        //console.log("player has hit the ground");
-    },
     
     createOnscreenControls: function () {
         // creating buttons instead of sprites
@@ -241,9 +262,15 @@ var GameState = {
             barrel = this.barrels.create(0, 0, 'barrel');
         }
         
+        // make the barrels bounce
+        barrel.body.collideWorldBounds = true;
+        barrel.body.bounce.set(1, 0);
+        
         // new or revived dead barrel - we don't care - place it
         barrel.reset(this.levelData.goal.x, this.levelData.goal.y);
         // not sure what 'reset' does - was not explained
+        // adjust the barrel velocity
+        barrel.body.velocity.x = this.levelData.barrelSpeed;
     }
   
 };
