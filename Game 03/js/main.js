@@ -94,6 +94,11 @@ var GameState = {
     }, this);
     // disable gravity
     this.fires.setAll('body.allowGravity', false);
+      
+    // Add the end game goal
+    this.goal = this.add.sprite(this.levelData.goal.x, this.levelData.goal.y, 'goal');
+    this.game.physics.arcade.enable(this.goal);
+    this.goal.body.allowGravity = false;
 
   },
   update: function() {
@@ -106,6 +111,9 @@ var GameState = {
       
     // we use 'overlap' when detecting collisions between fire and the player
     this.game.physics.arcade.overlap(this.player, this.fires, this.killPlayer);
+
+      // and we use overlap to detect collision between the player and the end goal
+    this.game.physics.arcade.overlap(this.player, this.goal, this.winGame);
       
     // set the speed of the player to zero by default
     this.player.body.velocity.x = 0;
@@ -208,6 +216,11 @@ var GameState = {
     
     killPlayer: function(player, fire) {
         console.log("YOU LOST!!!");
+        game.state.start('GameState');
+    },
+    
+    winGame: function(player, goal) {
+        alert("YOU WIN!!!!");
         game.state.start('GameState');
     }
   
